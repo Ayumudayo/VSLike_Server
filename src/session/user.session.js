@@ -1,3 +1,5 @@
+// src/session/user.session.js
+
 import { userSessions } from './sessions.js';
 import { updateUserLocation } from '../db/user/user.db.js';
 

@@ -1,3 +1,5 @@
+// src/classes/models/game.class.js
+
 import IntervalManager from '../managers/interval.manager.js';
 import { createLocationPacket } from '../../utils/notification/game.notification.js';
 

@@ -1,3 +1,5 @@
+// src/classes/managers/base.manager.js
+
 class BaseManager {
   constructor() {
     if (new.target === BaseManager) {

@@ -1,3 +1,5 @@
+// src/session/game.session.js
+
 import Game from '../classes/models/game.class.js';
 import { gameSessions } from './sessions.js';
 
