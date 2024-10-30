@@ -24,6 +24,10 @@ class Game {
       return this.users.splice(index, 1)[0];
     }
   }
+  
+  getGameId() {
+    return this.id;
+  }
 
   getMaxLatency() {
     let maxLatency = 0;

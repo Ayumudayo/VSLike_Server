@@ -23,9 +23,10 @@ const initialHandler = async ({ socket, _, payload }) => {
 
     user = new User(socket, deviceId, playerId, latency, coords);
 
-    addUser(user);
     const gameSession = getGameSession();
-    console.log(gameSession);
+    user.setGameId(gameSession.getGameId());
+
+    addUser(user);
     gameSession.addUser(user);
 
     const initialResponse = createResponse(HANDLER_IDS.INITIAL, RESPONSE_SUCCESS_CODE, {

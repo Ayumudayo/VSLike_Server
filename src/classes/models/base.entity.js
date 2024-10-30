@@ -12,7 +12,16 @@ class BaseEntity {
         this.lastX = coords.x;
         this.lastY = coords.y;
         this.speed = 6; // 기본 속도, 필요에 따라 조정 가능
+        this.currentGameId = null;
         this.lastUpdateTime = Date.now();
+    }
+    
+    setGameId(id) {
+        this.currentGameId = id;
+    }
+    
+    getGameId() {
+        return this.currentGameId;
     }
 
     updatePosition(x, y) {
