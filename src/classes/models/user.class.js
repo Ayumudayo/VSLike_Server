@@ -12,7 +12,6 @@ class User extends BaseEntity {
   }
 
   getNextSequence() {
-    console.log(`getNextSequence(): ${this.sequence}`);
     this.sequence += 1;
     return this.sequence;
   }

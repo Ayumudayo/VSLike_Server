@@ -24,12 +24,12 @@ export const onData = (socket) => async (data) => {
         switch (packetType) {
           case PACKET_TYPE.NORMAL:
             const { handlerId, sequence, userId, payload } = packetParser(packet);
-
+            
+            // 정보 출력
             console.log(handlerId, sequence, userId, payload);
 
             const user = getUserById(userId);
 
-            if (user) console.log('user Sequence', user.sequence);
             // 유저가 접속해 있는 상황에서 시퀀스 검증
             if (user && user.sequence !== sequence) {
               throw new CustomError(ErrorCodes.INVALID_SEQUENCE, '잘못된 시퀀스 값입니다. ');
