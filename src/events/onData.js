@@ -17,8 +17,8 @@ export const onData = (socket) => async (data) => {
     const packetType = socket.buffer.readUInt8(config.packet.totalLength);
 
     if (socket.buffer.length >= length) {
-      const packet = socket.buffer.slice(totalHeaderLength, length);
-      socket.buffer = socket.buffer.slice(length);
+      const packet = socket.buffer.subarray(totalHeaderLength, length);
+      socket.buffer = socket.buffer.subarray(length);
 
       try {
         switch (packetType) {
@@ -32,9 +32,7 @@ export const onData = (socket) => async (data) => {
             if (user) console.log('user Sequence', user.sequence);
             // 유저가 접속해 있는 상황에서 시퀀스 검증
             if (user && user.sequence !== sequence) {
-              console.log(user.sequence);
-              console.log(sequence);
-              throw new CustomError(ErrorCodes.INVALID_SEQUENCE, '잘못된 호출 값입니다. ');
+              throw new CustomError(ErrorCodes.INVALID_SEQUENCE, '잘못된 시퀀스 값입니다. ');
             }
 
             const handler = getHandlerById(handlerId);
@@ -51,7 +49,7 @@ export const onData = (socket) => async (data) => {
         handlerError(socket, e);
       }
     } else {
-      // 아직 전체 패킷이 도착않았음
+      // 아직 전체 패킷이 도착하지 않았음
       break;
     }
   }

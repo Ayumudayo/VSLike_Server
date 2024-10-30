@@ -25,6 +25,7 @@ const initialHandler = async ({ socket, _, payload }) => {
 
     addUser(user);
     const gameSession = getGameSession();
+    console.log(gameSession);
     gameSession.addUser(user);
 
     const initialResponse = createResponse(HANDLER_IDS.INITIAL, RESPONSE_SUCCESS_CODE, {

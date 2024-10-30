@@ -1,7 +1,7 @@
 // src/classes/models/game.class.js
 
 import IntervalManager from '../managers/interval.manager.js';
-import { createLocationPacket } from '../../utils/notification/game.notification.js';
+import { createLocationPacket } from '../../utils/inform/game.inform.js';
 
 class Game {
   constructor(id) {

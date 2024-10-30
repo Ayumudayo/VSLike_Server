@@ -1,6 +1,6 @@
 syntax = 'proto3';
 
-package gameNotification;
+package gameInform;
 
 message LocationUpdate {
   repeated UserLocation users = 1;

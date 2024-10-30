@@ -8,12 +8,12 @@ export const addGameSession = (id) => {
   return gameSessions.add(game);
 };
 
-export const removeGameSession = (id) => {
-  return gameSessions.remove((game) => game.id === id);
+export const removeGameSession = () => {
+  delete gameSessions[0];
 };
 
-export const getGameSession = (id) => {
-  return gameSessions.find((game) => game.id === id);
+export const getGameSession = () => {
+  return gameSessions.sessions[0];
 };
 
 export const getAllGameSessions = () => {

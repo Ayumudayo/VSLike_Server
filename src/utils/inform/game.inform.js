@@ -2,7 +2,7 @@ import { config } from '../../config/config.js';
 import { getProtoMessages } from '../../init/loadProtos.js';
 import { PACKET_TYPE } from '../../constants/header.js';
 
-const makeNotification = (message, type) => {
+const makeInformPacket = (message, type) => {
   const packetLength = Buffer.alloc(config.packet.totalLength);
   packetLength.writeUInt32BE(
     message.length + config.packet.totalLength + config.packet.typeLength,
@@ -17,10 +17,10 @@ const makeNotification = (message, type) => {
 
 export const createLocationPacket = (users) => {
   const protoMessage = getProtoMessages();
-  const Location = protoMessage.gameNotification.LocationUpdate;
+  const Location = protoMessage.gameInform.LocationUpdate;
 
   const payload = { users };
   const message = Location.create(payload);
   const locationPacket = Location.encode(message).finish();
-  return makeNotification(locationPacket, PACKET_TYPE.LOCATION);
+  return makeInformPacket(locationPacket, PACKET_TYPE.LOCATION);
 };
