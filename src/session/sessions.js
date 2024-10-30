@@ -1,4 +1,6 @@
 // src/session/sessions.js
 
-export const userSessions = [];
-export const gameSessions = [];
+import { SessionManager } from './SessionManager.js';
+
+export const userSessions = new SessionManager();
+export const gameSessions = new SessionManager();

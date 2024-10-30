@@ -4,29 +4,24 @@ import { userSessions } from './sessions.js';
 import { updateUserLocation } from '../db/user/user.db.js';
 
 export const addUser = (user) => {
-  userSessions.push(user);
-  return user;
+  return userSessions.add(user);
 };
 
 export const removeUser = async (socket) => {
-  const index = userSessions.findIndex((user) => user.socket === socket);
-  if (index !== -1) {
-    await updateUserLocation(userSessions[index].x, userSessions[index].y, userSessions[index].id);
-    return userSessions.splice(index, 1)[0];
+  const user = userSessions.remove((user) => user.socket === socket);
+  if (user) {
+    await updateUserLocation(user.x, user.y, user.id);
   }
+  return user;
 };
 
 export const getNextSequence = (id) => {
   const user = getUserById(id);
-  if (user) {
-    return user.getNextSequence();
-  }
-  return null;
+  return user ? user.getNextSequence() : null;
 };
 
 export const getUserById = (id) => {
-  const user = userSessions.find((user) => user.id === id);
-  return user;
+  return userSessions.find((user) => user.id === id);
 };
 
 export const getUserBySocket = (socket) => {
@@ -34,5 +29,5 @@ export const getUserBySocket = (socket) => {
 };
 
 export const getAllUsers = () => {
-  return userSessions;
+  return userSessions.getAll();
 };
