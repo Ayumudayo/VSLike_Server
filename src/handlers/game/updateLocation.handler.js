@@ -18,9 +18,10 @@ const updateLocationHandler = ({ socket, userId, payload }) => {
     }
 
     user.updatePosition(x, y);
-    const packet = gameSession.getAllLocation(userId);
-
-    socket.write(packet);
+    
+    // 인터벌에서 처리
+    // const packet = gameSession.getAllLocation(userId);
+    // socket.write(packet);
   } catch (e) {
     handlerError(socket, e);
   }
