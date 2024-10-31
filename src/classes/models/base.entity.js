@@ -15,11 +15,11 @@ class BaseEntity {
         this.currentGameId = null;
         this.lastUpdateTime = Date.now();
     }
-    
+
     setGameId(id) {
         this.currentGameId = id;
     }
-    
+
     getGameId() {
         return this.currentGameId;
     }
@@ -40,12 +40,26 @@ class BaseEntity {
         const timeDiff = (Date.now() - this.lastUpdateTime + latency) / 1000; // 초 단위로 변환
         const distance = this.speed * timeDiff;
 
-        const directionX = this.x !== this.lastX ? Math.sign(this.x - this.lastX) : 0;
-        const directionY = this.y !== this.lastY ? Math.sign(this.y - this.lastY) : 0;
+        const totalDistanceX = this.x - this.lastX;
+        const totalDistanceY = this.y - this.lastY;
+
+        const angle = Math.atan2(totalDistanceY, totalDistanceX);
+
+        const movedX = this.lastX + Math.cos(angle) * distance;
+        const movedY = this.lastY + Math.sin(angle) * distance;
+
+        // 목표 위치를 초과하지 않도록 제한
+        const newX = (totalDistanceX > 0)
+            ? Math.min(movedX, this.x)
+            : Math.max(movedX, this.x);
+
+        const newY = (totalDistanceY > 0)
+            ? Math.min(movedY, this.y)
+            : Math.max(movedY, this.y);
 
         return {
-            x: this.x + directionX * distance,
-            y: this.y + directionY * distance,
+            x: newX,
+            y: newY,
         };
     }
 }
