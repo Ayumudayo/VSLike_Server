@@ -4,27 +4,27 @@ import { ErrorCodes } from '../../utils/error/errorCodes.js';
 import { handlerError } from '../../utils/error/errorHandler.js';
 
 const updateLocationHandler = ({ socket, userId, payload }) => {
-  try {
-    const { x, y } = payload;
-    const gameSession = getGameSession();
+    try {
+        const { x, y } = payload;
+        const gameSession = getGameSession();
 
-    if (!gameSession) {
-      throw new CustomError(ErrorCodes.GAME_NOT_FOUND, '게임 세션을 찾을 수 없습니다.');
+        if (!gameSession) {
+            throw new CustomError(ErrorCodes.GAME_NOT_FOUND, '게임 세션을 찾을 수 없습니다.');
+        }
+
+        const user = gameSession.getUser(userId);
+        if (!user) {
+            throw new CustomError(ErrorCodes.USER_NOT_FOUND, '유저를 찾을 수 없습니다.');
+        }
+
+        user.updatePosition(x, y);
+
+        // 인터벌에서 처리
+        // const packet = gameSession.getAllLocation(userId);
+        // socket.write(packet);
+    } catch (e) {
+        handlerError(socket, e);
     }
-
-    const user = gameSession.getUser(userId);
-    if (!user) {
-      throw new CustomError(ErrorCodes.USER_NOT_FOUND, '유저를 찾을 수 없습니다.');
-    }
-
-    user.updatePosition(x, y);
-    
-    // 인터벌에서 처리
-    // const packet = gameSession.getAllLocation(userId);
-    // socket.write(packet);
-  } catch (e) {
-    handlerError(socket, e);
-  }
 };
 
 export default updateLocationHandler;
