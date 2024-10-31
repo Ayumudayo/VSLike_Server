@@ -1,16 +1,21 @@
+// src/session/game.session.js
+
 import Game from '../classes/models/game.class.js';
 import { gameSessions } from './sessions.js';
 
 export const addGameSession = (id) => {
-  const session = new Game(id);
-  gameSessions.push(session);
-  return session;
+    const game = new Game(id);
+    return gameSessions.add(game);
 };
 
 export const removeGameSession = () => {
-  delete gameSessions[0];
+    delete gameSessions[0];
 };
 
 export const getGameSession = () => {
-  return gameSessions[0];
+    return gameSessions.sessions[0];
+};
+
+export const getAllGameSessions = () => {
+    return gameSessions.getAll();
 };

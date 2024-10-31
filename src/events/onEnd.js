@@ -1,3 +1,5 @@
+// src/events/onEnd.js
+
 import { removeUser } from '../session/user.session.js';
 import { getGameSession } from '../session/game.session.js';
 
