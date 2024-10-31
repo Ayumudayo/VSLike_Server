@@ -1,7 +1,7 @@
 import net from 'net';
-import initServer from "./init/index.js";
-import { config } from "./config/config.js";
-import { onConnection } from "./events/onConnection.js";
+import initServer from './init/index.js';
+import { config } from './config/config.js';
+import { onConnection } from './events/onConnection.js';
 
 const server = net.createServer(onConnection);
 
