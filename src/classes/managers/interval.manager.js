@@ -5,46 +5,53 @@ import BaseManager from './base.manager.js';
 class IntervalManager extends BaseManager {
   constructor() {
     super();
-    this.intervals = new Map();
+    this.playerIntervals = new Map();
+    this.globalIntervals = new Map();
   }
 
-  addPlayer(playerId, callback, interval, type = 'user') {
-    if (!this.intervals.has(playerId)) {
-      this.intervals.set(playerId, new Map());
+  // 플레이어별 인터벌 추가
+  addPlayerInterval(playerId, callback, interval, type = 'updatePosition') {
+    if (!this.playerIntervals.has(playerId)) {
+      this.playerIntervals.set(playerId, new Map());
     }
-    this.intervals.get(playerId).set(type, setInterval(callback, interval));
+    const intervalId = setInterval(callback, interval);
+    this.playerIntervals.get(playerId).set(type, intervalId);
   }
 
-  addUpdatePosition(playerId, callback, interval) {
-    this.addPlayer(playerId, callback, interval, 'updatePosition');
-  }
-
-  removePlayer(playerId) {
-    if (this.intervals.has(playerId)) {
-      const userIntervals = this.intervals.get(playerId);
-      userIntervals.forEach((intervalId) => clearInterval(intervalId));
-      this.intervals.delete(playerId);
-    }
-  }
-
-  removeInterval(playerId, type) {
-    if (this.intervals.has(playerId)) {
-      const userIntervals = this.intervals.get(playerId);
-
-      if (userIntervals.has(type)) {
-        clearInterval(userIntervals.get(type));
-        userIntervals.delete(type);
-      }
+  // 플레이어별 인터벌 제거
+  removePlayerIntervals(playerId) {
+    if (this.playerIntervals.has(playerId)) {
+      const intervals = this.playerIntervals.get(playerId);
+      intervals.forEach((intervalId) => clearInterval(intervalId));
+      this.playerIntervals.delete(playerId);
     }
   }
 
-  clearAll() {
-    this.intervals.forEach((userIntervals) => {
-      userIntervals.forEach((intervalId) => {
-        clearInterval(intervalId);
-      });
+  // 글로벌 인터벌 추가
+  addGlobalInterval(id, callback, interval) {
+    const intervalId = setInterval(callback, interval);
+    this.globalIntervals.set(id, intervalId);
+  }
+
+  // 글로벌 인터벌 제거
+  removeGlobalInterval(id) {
+    if (this.globalIntervals.has(id)) {
+      clearInterval(this.globalIntervals.get(id));
+      this.globalIntervals.delete(id);
+    }
+  }
+
+  // 모든 인터벌 제거
+  clearAllIntervals() {
+    this.playerIntervals.forEach((intervals) => {
+      intervals.forEach((intervalId) => clearInterval(intervalId));
     });
-    this.intervals.clear();
+    this.playerIntervals.clear();
+
+    this.globalIntervals.forEach((intervalId) => {
+      clearInterval(intervalId);
+    });
+    this.globalIntervals.clear();
   }
 }
 

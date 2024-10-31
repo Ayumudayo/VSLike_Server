@@ -18,14 +18,13 @@ class Game {
   addUser(user) {
     this.users.push(user);
 
-    // 각 사용자에 대해 위치 업데이트 인터벌 설정
-    const interval = 1000 / 30; // 초당 30회 > 30프레임으로 생각
+    // 플레이어별 인터벌 추가
+    const interval = 1000 / 60; // 60FPS
     const callback = () => {
-      // 사용자 위치 업데이트 로직
       const newCoords = user.calculatePosition(this.getMaxLatency());
       user.updatePosition(newCoords.x, newCoords.y);
     };
-    this.intervalManager.addPlayer(user.id, callback, interval, 'updatePosition');
+    this.intervalManager.addPlayerInterval(user.id, callback, interval);
   }
 
   getUser(userId) {
@@ -35,7 +34,12 @@ class Game {
   removeUser(socket) {
     const index = this.users.findIndex((user) => user.socket === socket);
     if (index !== -1) {
-      return this.users.splice(index, 1)[0];
+      const user = this.users.splice(index, 1)[0];
+
+      // 플레이어별 인터벌 제거
+      this.intervalManager.removePlayerIntervals(user.id);
+
+      return user;
     }
   }
   
@@ -46,7 +50,7 @@ class Game {
   getMaxLatency() {
     let maxLatency = 0;
     this.users.forEach((user) => {
-      maxLatency = Math.max(maxLatency, user.latency);
+      maxLatency = Math.max(maxLatency, user.getLatency());
     });
     return maxLatency;
   }
@@ -73,34 +77,31 @@ class Game {
         user.socket.write(packet);
       });
     };
-    this.intervalManager.addPlayer('game', callback, interval, 'broadcastLocation');
+    this.intervalManager.addGlobalInterval('broadcastLocation', callback, interval);
   }
   
   // 주기적으로 레이턴시 보정
   startLatencyCompensation() {
-    const interval = 100; // 100ms마다 지연 시간 보정
+    const interval = 100; // 100ms마다
     const callback = () => {
       const maxLatency = this.getMaxLatency();
       this.users.forEach((user) => {
-        console.log('위치 보정 인터벌 호출');
-        // 지연 시간에 따른 위치 보정 로직
         const adjustedPosition = user.calculatePosition(maxLatency);
         user.updatePosition(adjustedPosition.x, adjustedPosition.y);
       });
     };
-    this.intervalManager.addPlayer('latencyCompensation', callback, interval, 'latencyCompensation');
+    this.intervalManager.addGlobalInterval('latencyCompensation', callback, interval);
   }
 
   // 지정 인터벌마다 DB에 위치 정보 동기화
   startUserStateSync() {
-    const interval = 5000; // 5초마다 동기화
+    const interval = 5000; // 5초마다
     const callback = () => {
       this.users.forEach(async (user) => {
-        console.log('DB 싱크 인터벌 호출');
-        await updateUserLocation(user.x, user.y, user.id)
+        await updateUserLocation(user.x, user.y, user.id);
       });
     };
-    this.intervalManager.addPlayer('stateSync', callback, interval, 'stateSync');
+    this.intervalManager.addGlobalInterval('stateSync', callback, interval);
   }
 }
 

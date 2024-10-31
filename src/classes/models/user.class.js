@@ -10,6 +10,14 @@ class User extends BaseEntity {
     this.latency = latency;
     this.sequence = 1;
   }
+  
+  setLatency(latency) {
+    this.latency = latency;
+  }
+  
+  getLatency() {
+    return this.latency;
+  }
 
   getNextSequence() {
     this.sequence += 1;
