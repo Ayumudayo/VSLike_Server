@@ -1,3 +1,5 @@
+// src/events/onError.js
+
 import { handlerError } from '../utils/error/errorHandler.js';
 import CustomError from '../utils/error/customError.js';
 import { removeUser } from '../session/user.session.js';

@@ -1,3 +1,5 @@
+// src/events/onData.js
+
 import { config } from '../config/config.js';
 import { PACKET_TYPE } from '../constants/header.js';
 import { packetParser } from '../utils/parser/packetParser.js';

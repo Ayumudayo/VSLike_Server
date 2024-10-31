@@ -1,3 +1,5 @@
+// src/utils/inform/game.inform.js
+
 import { config } from '../../config/config.js';
 import { getProtoMessages } from '../../init/loadProtos.js';
 import { PACKET_TYPE } from '../../constants/header.js';

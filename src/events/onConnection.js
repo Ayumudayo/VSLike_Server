@@ -1,3 +1,5 @@
+// src/events/onConnection.js
+
 import { onData } from './onData.js';
 import { onEnd } from './onEnd.js';
 import { onError } from './onError.js';
