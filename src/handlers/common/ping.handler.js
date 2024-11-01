@@ -13,7 +13,7 @@ const pingHandler = async ({ socket, userId, payload }) => {
 
         // 레이턴시 계산
         const rtt = currentTime - timestamp;
-        const latency = Math.round(rtt / 2);
+        const latency = Math.abs(Math.round(rtt / 2));
 
         // 유저 정보 업데이트
         const user = getUserById(userId);
