@@ -70,7 +70,7 @@ class Game {
 
     // 인터벌을 통한 위치 업데이트
     startLocationBroadcast() {
-        const interval = 1000 / 30; // 초당 30회
+        const interval = 1000 / 60;
         const callback = () => {
             const packet = this.getAllLocation();
             this.users.forEach((user) => {
@@ -95,7 +95,7 @@ class Game {
 
     // 지정 인터벌마다 DB에 위치 정보 동기화
     startUserStateSync() {
-        const interval = 5000; // 5초마다
+        const interval = 1000; // 1초마다
         const callback = () => {
             this.users.forEach(async (user) => {
                 await updateUserLocation(user.x, user.y, user.id);
