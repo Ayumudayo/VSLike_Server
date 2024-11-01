@@ -22,7 +22,7 @@ const pingHandler = async ({ socket, userId, payload }) => {
             console.log(`Updated latency for user ${user.id}: ${latency} ms`);
         }
 
-        const pongResponse = createResponse(HANDLER_IDS.PING, RESPONSE_SUCCESS_CODE, {});
+        const pongResponse = createResponse(HANDLER_IDS.PING, RESPONSE_SUCCESS_CODE, { timestamp: currentTime });
 
         socket.write(pongResponse);
     } catch (e) {
