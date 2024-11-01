@@ -52,25 +52,14 @@ class BaseEntity {
         const movedX = this.lastX + Math.cos(angle) * distance;
         const movedY = this.lastY + Math.sin(angle) * distance;
 
-        function easeInOutQuad(x) {
-            return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
-        }
-
-        const updateInterval = 60 / 1000;
-        const t = Math.min(timeDiff / updateInterval, 1);
-        const interpolationFactor = easeInOutQuad(t);
-
-        const interpolatedX = this.lastX + (movedX - this.lastX) * interpolationFactor;
-        const interpolatedY = this.lastY + (movedY - this.lastY) * interpolationFactor;
-
         // 목표 위치를 초과하지 않도록 제한
         const newX = (totalDistanceX > 0)
-            ? Math.min(interpolatedX, this.x)
-            : Math.max(interpolatedX, this.x);
+            ? Math.min(movedX, this.x)
+            : Math.max(movedX, this.x);
 
         const newY = (totalDistanceY > 0)
-            ? Math.min(interpolatedY, this.y)
-            : Math.max(interpolatedY, this.y);
+            ? Math.min(movedY, this.y)
+            : Math.max(movedY, this.y);
 
         return {
             x: newX,
