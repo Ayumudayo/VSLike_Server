@@ -4,6 +4,8 @@ import IntervalManager from '../managers/interval.manager.js';
 import { createLocationPacket } from '../../utils/inform/game.inform.js';
 import { updateUserLocation } from '../../db/user/user.db.js';
 
+const BASE_INTERVAL = 1000 / 60;
+
 class Game {
     constructor(id) {
         this.id = id;
@@ -19,7 +21,7 @@ class Game {
         this.users.push(user);
 
         // 플레이어별 인터벌 추가
-        const interval = 1000 / 60; // 60FPS
+        const interval = BASE_INTERVAL; // 60FPS
         const callback = () => {
             const newCoords = user.calculatePosition(this.getMaxLatency());
             user.updatePosition(newCoords.x, newCoords.y);
@@ -70,7 +72,7 @@ class Game {
 
     // 인터벌을 통한 위치 업데이트
     startLocationBroadcast() {
-        const interval = 1000 / 60;
+        const interval = BASE_INTERVAL;
         const callback = () => {
             const packet = this.getAllLocation();
             this.users.forEach((user) => {
@@ -82,7 +84,7 @@ class Game {
 
     // 주기적으로 레이턴시 보정
     startLatencyCompensation() {
-        const interval = 100; // 100ms마다
+        const interval = BASE_INTERVAL;
         const callback = () => {
             const maxLatency = this.getMaxLatency();
             this.users.forEach((user) => {
@@ -95,7 +97,7 @@ class Game {
 
     // 지정 인터벌마다 DB에 위치 정보 동기화
     startUserStateSync() {
-        const interval = 1000; // 1초마다
+        const interval = 5000; // 5초마다
         const callback = () => {
             this.users.forEach(async (user) => {
                 await updateUserLocation(user.x, user.y, user.id);
